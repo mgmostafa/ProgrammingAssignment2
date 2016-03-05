@@ -1,41 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+##################################################################################
+## This R code contains two functions: makeCacheMatrix and cacheSolve. The first
+## caches the inverse of a square matrix. While the later find the inverse of the
+## cached matrix if it was not cached already.
+#################################################################################
 
-## Write a short comment describing this function
 
+## The makeCacheMatrix function cashes the inverse of a matrix
 makeCacheMatrix <- function(x = matrix()) {
-     m <- NULL
      im <- NULL
      set <- function(y) {
           x <<- y
-          m <<- NULL
-          im <<-NULL
+          im <<- NULL
      }
      get <- function() x
-     setmat <- function(mat) m <<- mat
-     getmat <- function() m
      setinv <- function(mat) im <- solve(mat)
      getinv <- function() im 
-     list(set = set, get = get,
-          setmat = setmat,
-          getmat = getmat,
-          setinv = setinv,
-          getinv = getinv)
+     list(set=set, get=get, setinv=setinv, getinv=getinv)
 }
 
 
-## Write a short comment describing this function
-
+## The cacheSolve function find the inverse of a matrix if it was not cached 
+## by the makeCacheMatrix function.
 cacheSolve <- function(x, ...) {
-     ## Return a matrix that is the inverse of 'x'
-     m <- x$getmat()
+     ## Return a matrix that is the inverse of 'x' (if cached)
+     m <- x$getinv()
      if(!is.null(m)) {
           message("getting cached data")
           return(m)
      }
+     ## Compute and Return a matrix that is the inverse of 'x' (not cached)
      mat <- x$get()
      m <- solve(mat, ...)
-     x$setmat(m)
+     x$setinv(m)
      m
 }
 
